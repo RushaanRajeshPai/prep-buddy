@@ -1,0 +1,58 @@
+# OS/editor artifacts
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Private environment and credentials
+.env
+.env.*
+!.env.example
+!.env.*.example
+secrets/
+credentials/
+*service-account*.json
+*service_account*.json
+*credentials*.json
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# Next.js/Node
+node_modules/
+.next/
+out/
+.next-env.d.ts
+*.tsbuildinfo
+
+# Generated/runtime files
+coverage/
+dist/
+build/
+*.log
+.runtime/
+recordings/
+uploads/
+*.db
+*.sqlite
+*.sqlite3
+
+# Local skills: never publish
+.agents/skills/
+.claude/skills/
+skills/
+SKILL.md
+**/SKILL.md
