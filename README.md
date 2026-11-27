@@ -4,7 +4,7 @@ AI-assisted interview and group-discussion practice through text and voice conve
 
 ## Status
 
-**Structure-only initial commit.** This repository contains planning documents and empty directory placeholders, not an implemented or runnable application. No dependencies, database, credentials, cloud resources, or deployment have been configured.
+Home page implemented locally: responsive light-only Next.js UI, login/register entry pages, and a FastAPI backend connected to a dedicated local PostgreSQL database. Email/password authentication and account sessions are implemented locally. Interview sessions, AI and voice are not implemented yet. Nothing has been deployed.
 
 ## Planned stack
 
@@ -13,7 +13,7 @@ AI-assisted interview and group-discussion practice through text and voice conve
 - **AI:** LangChain orchestration with Gemini through Google Vertex AI. LangChain is an integration framework, not itself an LLM.
 - **Frontend:** Next.js App Router, TypeScript, Tailwind CSS.
 - **Voice:** provider-neutral adapters; proposed Google Cloud streaming STT and TTS, with Vapi evaluated as an alternative. Final selection is pending.
-- **Experience:** responsive mobile-first layouts, light/dark/system themes, accessible text fallback.
+- **Experience:** responsive mobile-first layouts, light mode only for this phase.
 
 ## Repository layout
 
@@ -31,6 +31,8 @@ prep-buddy/
 - [Architecture](docs/architecture.md)
 - [Voice options](docs/voice-options.md)
 - [Responsive design and themes](docs/design-requirements.md)
+- [Local setup and start commands](docs/local-development.md)
+- [Proposed deployment](docs/deployment.md)
 
 ## Credentials
 

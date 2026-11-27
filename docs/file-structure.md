@@ -1,6 +1,6 @@
 # File structure
 
-The directory skeleton is present now with `.gitkeep` placeholders. Every named code or configuration file below is **planned**, not created in this initial commit. Avoid fake manifests, empty entrypoints, or pretend working code.
+The tree below is the architectural roadmap retained from the initial commit; `[planned]` labels in that tree are historical, not a current implementation inventory. See the current implementation section below. Keep routes in `app`, shared UI in `components`, feature-specific UI in `features`, and backend API/config/database ownership in their named directories.
 
 ```text
 prep-buddy/
@@ -103,4 +103,14 @@ prep-buddy/
     └── deployment/                         [planned: hosting configuration]
 ```
 
-Python package markers (`__init__.py`), dependency lockfiles, test configuration, migrations, Dockerfiles, and CI workflows will be introduced only during implementation. Route groups in parentheses organize Next.js layouts without changing URLs. API types will be generated from FastAPI's OpenAPI contract rather than maintained independently.
+Route groups in parentheses organize Next.js layouts without changing URLs. API types will be generated from FastAPI's OpenAPI contract when client API features are introduced.
+
+## Current implementation
+
+- Backend: `app/main.py`, `core/config.py`, `db/session.py`, `api/dependencies.py`, `api/v1/router.py`, and `api/v1/routes/health.py`; manifests, installed-version lock and unit/integration tests.
+- Frontend: `src/app/layout.tsx`, `page.tsx`, `globals.css`; shared `components/layout/navbar.tsx` and `footer.tsx`; feature owner `features/home/home-landing.tsx` and `features/auth/account-preview.tsx`; `(auth)/login/page.tsx` and `(auth)/register/page.tsx`; dependency lock and behaviour tests.
+- `features/home/` is an intentional extension: home-page composition lives in a feature owner rather than bloating the route or shared layout components.
+- Root `pyrightconfig.json` selects the backend virtual environment for Python editor diagnostics.
+- `docs/local-development.md` describes local start/stop and database boundaries; `docs/deployment.md` describes the later proposed deployment.
+- Authentication adds backend `models/user.py`, `models/auth_session.py`, `schemas/auth.py`, `core/security.py`, `core/auth_guard.py`, `api/v1/routes/auth.py`, and reviewed Alembic migrations. Frontend account forms/dashboard belong to `features/auth/`, with thin login/register/dashboard routes and API rewrite configuration.
+- Unimplemented practice-domain/AI/voice directories remain reserved placeholders. No fake model, auth endpoint, table or migration was added to make the home page look functional.

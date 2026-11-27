@@ -4,10 +4,10 @@ These are acceptance criteria for implementation, not claims about an existing U
 
 ## Theme
 
-- Light, dark and follow-system modes, with persisted preference.
-- Semantic CSS tokens for surfaces, text, borders, accent, focus, errors and success; no component-specific hardcoded theme colors.
-- Avoid theme flash during initial render and preserve text/control contrast in both themes.
-- Shared theme provider and accessible toggle in `src/components/theme/`.
+- Current implementation is light mode only, as requested; no theme toggle or dark-mode work.
+- White/warm neutral surfaces, dark readable text and one restrained green accent; no gradients.
+- Semantic CSS tokens for surfaces, text, borders, accent and focus.
+- Keep the reserved theme directory for a future explicitly requested theme phase.
 
 ## Responsive experience
 
@@ -30,4 +30,4 @@ These are acceptance criteria for implementation, not claims about an existing U
 
 ## Verification plan
 
-Test representative viewport widths of 320, 375, 768, 1024, 1440 and 1920 CSS pixels plus a wide desktop viewport; check portrait/landscape, zoom and keyboard interactions. Exercise Safari/iOS, Chrome/Android and desktop browsers, with permission denial, reconnects and both themes. Real-device voice testing remains necessary; viewport emulation alone is insufficient.
+Test representative viewport widths of 320, 375, 768, 1024, 1440 and 1920 CSS pixels plus a wide desktop viewport; check portrait/landscape, zoom and keyboard interactions. Exercise Safari/iOS, Chrome/Android and desktop browsers, with permission denial and reconnects once voice is implemented. Verify light mode for the current phase. Real-device voice testing remains necessary; viewport emulation alone is insufficient.
