@@ -26,16 +26,24 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 Database = Annotated[AsyncSession, Depends(get_db)]
 
 
-async def issue_session(db: AsyncSession, user: User, request: Request, response: Response):
+async def issue_session(
+    db: AsyncSession, user: User, request: Request, response: Response
+):
     # Rotate this browser's existing session without logging out other devices.
     old_token = request.cookies.get(COOKIE_NAME)
     if old_token and len(old_token) <= 128:
         await db.execute(
-            delete(AuthSession).where(AuthSession.token_digest == token_digest(old_token))
+            delete(AuthSession).where(
+                AuthSession.token_digest == token_digest(old_token)
+            )
         )
     token = create_session_token()
     expires_at = datetime.now(UTC) + timedelta(seconds=SESSION_SECONDS)
-    db.add(AuthSession(token_digest=token_digest(token), user_id=user.id, expires_at=expires_at))
+    db.add(
+        AuthSession(
+            token_digest=token_digest(token), user_id=user.id, expires_at=expires_at
+        )
+    )
     await db.commit()
     response.set_cookie(
         COOKIE_NAME,
@@ -50,11 +58,15 @@ async def issue_session(db: AsyncSession, user: User, request: Request, response
 
 
 @router.post("/register", status_code=201, response_model=AuthResponse)
-async def register(payload: RegisterRequest, request: Request, response: Response, db: Database):
+async def register(
+    payload: RegisterRequest, request: Request, response: Response, db: Database
+):
     user = User(
         name=payload.name,
         email=str(payload.email),
-        password_hash=await run_in_threadpool(hash_password, payload.password.get_secret_value()),
+        password_hash=await run_in_threadpool(
+            hash_password, payload.password.get_secret_value()
+        ),
     )
     db.add(user)
     try:
@@ -69,7 +81,9 @@ async def register(payload: RegisterRequest, request: Request, response: Respons
 
 
 @router.post("/login", response_model=AuthResponse)
-async def login(payload: LoginRequest, request: Request, response: Response, db: Database):
+async def login(
+    payload: LoginRequest, request: Request, response: Response, db: Database
+):
     user = await db.scalar(select(User).where(User.email == str(payload.email)))
     valid = await run_in_threadpool(
         verify_password,
@@ -104,7 +118,9 @@ async def me(request: Request, db: Database):
 async def logout(request: Request, response: Response, db: Database):
     token = request.cookies.get(COOKIE_NAME)
     if token and len(token) <= 128:
-        await db.execute(delete(AuthSession).where(AuthSession.token_digest == token_digest(token)))
+        await db.execute(
+            delete(AuthSession).where(AuthSession.token_digest == token_digest(token))
+        )
         await db.commit()
     response.delete_cookie(
         COOKIE_NAME,

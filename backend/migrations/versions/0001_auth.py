@@ -21,12 +21,17 @@ def upgrade():
         sa.Column("email", sa.String(320), nullable=False),
         sa.Column("password_hash", sa.String(255), nullable=False),
         sa.Column(
-            "created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
         ),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("email", name="uq_users_email"),
         sa.CheckConstraint("email = lower(email)", name="ck_users_email_lower"),
-        sa.CheckConstraint("char_length(name) BETWEEN 2 AND 80", name="ck_users_name_length"),
+        sa.CheckConstraint(
+            "char_length(name) BETWEEN 2 AND 80", name="ck_users_name_length"
+        ),
     )
     op.create_table(
         "auth_sessions",
@@ -34,7 +39,10 @@ def upgrade():
         sa.Column("user_id", sa.Uuid(), nullable=False),
         sa.Column("expires_at", sa.DateTime(timezone=True), nullable=False),
         sa.Column(
-            "created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
         ),
         sa.PrimaryKeyConstraint("token_digest"),
         sa.ForeignKeyConstraint(["user_id"], ["users.id"], ondelete="CASCADE"),

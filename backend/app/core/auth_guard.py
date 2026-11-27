@@ -26,11 +26,15 @@ class AuthGuardMiddleware:
             or not scope["path"].startswith("/api/v1/auth/")
         ):
             return await self.app(scope, receive, send)
-        origins = [value.decode("latin1") for key, value in scope["headers"] if key == b"origin"]
+        origins = [
+            value.decode("latin1")
+            for key, value in scope["headers"]
+            if key == b"origin"
+        ]
         if len(origins) != 1 or origins[0] not in self.allowed_origins:
-            return await JSONResponse({"detail": "Untrusted request origin"}, status_code=403)(
-                scope, receive, send
-            )
+            return await JSONResponse(
+                {"detail": "Untrusted request origin"}, status_code=403
+            )(scope, receive, send)
         if scope["path"].rstrip("/") in {"/api/v1/auth/register", "/api/v1/auth/login"}:
             now = self.clock()
             while self.attempts:

@@ -3,5 +3,9 @@ import { fileURLToPath } from "node:url";
 
 export default defineConfig({
   resolve: { alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) } },
-  test: { environment: "jsdom", setupFiles: ["./tests/unit/setup.ts"], include: ["tests/unit/**/*.test.tsx"] },
+  test: {
+    environment: "jsdom",
+    setupFiles: ["./tests/unit/setup.ts"],
+    include: ["tests/unit/**/*.test.tsx"],
+  },
 });

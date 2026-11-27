@@ -17,14 +17,17 @@ from app.main import create_app
 def test_registration_validates_input(payload):
     with TestClient(create_app()) as client:
         response = client.post(
-            "/api/v1/auth/register", json=payload, headers={"Origin": "http://localhost:3000"}
+            "/api/v1/auth/register",
+            json=payload,
+            headers={"Origin": "http://localhost:3000"},
         )
     assert response.status_code == 422
     assert "password123" not in response.text
 
 
 @pytest.mark.parametrize(
-    "origin", [None, "null", "https://evil.example", "http://localhost:3000.evil.example"]
+    "origin",
+    [None, "null", "https://evil.example", "http://localhost:3000.evil.example"],
 )
 @pytest.mark.parametrize("route", ["register", "login", "logout"])
 def test_post_requires_explicit_trusted_origin(origin, route):
@@ -68,7 +71,9 @@ def test_cors_allows_credentials_only_for_exact_origins():
         )
         assert response.status_code == 200
         assert response.headers["access-control-allow-credentials"] == "true"
-        assert response.headers["access-control-allow-origin"] == "http://localhost:3000"
+        assert (
+            response.headers["access-control-allow-origin"] == "http://localhost:3000"
+        )
         bad = client.options(
             "/api/v1/auth/login",
             headers={
@@ -122,7 +127,9 @@ def test_rate_limit_memory_capacity_and_window_expiry():
     async def receive():
         return {"type": "http.request", "body": b""}
 
-    guard = AuthGuardMiddleware(app, ["http://localhost:3000"], max_ips=2, clock=lambda: now[0])
+    guard = AuthGuardMiddleware(
+        app, ["http://localhost:3000"], max_ips=2, clock=lambda: now[0]
+    )
 
     def attempt(ip):
         messages.clear()

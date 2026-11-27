@@ -12,7 +12,9 @@ from app.db.session import get_engine
 from app.main import create_app
 
 
-@pytest.mark.skipif(os.getenv("RUN_DATABASE_TESTS") != "1", reason="Requires local PostgreSQL")
+@pytest.mark.skipif(
+    os.getenv("RUN_DATABASE_TESTS") != "1", reason="Requires local PostgreSQL"
+)
 def test_registration_session_login_logout():
     email = f"auth-test-{uuid.uuid4().hex}@example.com"
     password = "Synthetic-password-123"
@@ -37,7 +39,11 @@ def test_registration_session_login_logout():
             uuid.UUID(user["id"])
             cookie = result.headers["set-cookie"]
             assert "HttpOnly" in cookie and "SameSite=lax" in cookie
-            assert "Max-Age=604800" in cookie and "Path=/" in cookie and "expires=" in cookie
+            assert (
+                "Max-Age=604800" in cookie
+                and "Path=/" in cookie
+                and "expires=" in cookie
+            )
             token = client.cookies.get("prepbuddy_session")
             assert token and client.get("/api/v1/auth/me").json() == {"user": user}
             duplicate = client.post(
@@ -65,7 +71,10 @@ def test_registration_session_login_logout():
             assert wrong.status_code == 401
             missing = client.post(
                 "/api/v1/auth/login",
-                json={"email": f"missing-{uuid.uuid4().hex}@example.com", "password": password},
+                json={
+                    "email": f"missing-{uuid.uuid4().hex}@example.com",
+                    "password": password,
+                },
                 headers=origin,
             )
             assert missing.status_code == 401 and missing.json() == wrong.json()
@@ -90,11 +99,15 @@ def test_registration_session_login_logout():
                     assert row[0] != password and verify_password(password, row[0])
                     digest = (
                         await connection.execute(
-                            text("SELECT token_digest FROM auth_sessions WHERE user_id=:id"),
+                            text(
+                                "SELECT token_digest FROM auth_sessions WHERE user_id=:id"
+                            ),
                             {"id": user["id"]},
                         )
                     ).scalar_one()
-                    assert digest == token_digest(client.cookies.get("prepbuddy_session"))
+                    assert digest == token_digest(
+                        client.cookies.get("prepbuddy_session")
+                    )
                     assert digest != client.cookies.get("prepbuddy_session")
                     await connection.execute(
                         text(
@@ -120,7 +133,8 @@ def test_registration_session_login_logout():
                 )
                 assert (
                     await connection.execute(
-                        text("SELECT count(*) FROM users WHERE email=:email"), {"email": email}
+                        text("SELECT count(*) FROM users WHERE email=:email"),
+                        {"email": email},
                     )
                 ).scalar_one() == 0
             await get_engine().dispose()

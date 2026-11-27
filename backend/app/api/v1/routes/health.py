@@ -9,7 +9,9 @@ router = APIRouter()
 
 
 @router.get("/health", tags=["health"])
-async def health(probe: Annotated[DatabaseProbe, Depends(get_database_probe)]) -> dict[str, str]:
+async def health(
+    probe: Annotated[DatabaseProbe, Depends(get_database_probe)],
+) -> dict[str, str]:
     try:
         await probe()
     except SQLAlchemyError:

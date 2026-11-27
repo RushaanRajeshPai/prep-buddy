@@ -8,7 +8,10 @@ from fastapi.testclient import TestClient
 from app.main import app
 
 
-@pytest.mark.skipif(os.getenv("RUN_DATABASE_TESTS") != "1", reason="Requires configured local PostgreSQL")
+@pytest.mark.skipif(
+    os.getenv("RUN_DATABASE_TESTS") != "1",
+    reason="Requires configured local PostgreSQL",
+)
 def test_real_database_readiness():
     with TestClient(app) as client:
         response = client.get("/api/v1/health")

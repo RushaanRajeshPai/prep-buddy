@@ -9,7 +9,9 @@ from app.models.user import User  # noqa: F401
 
 
 def run_migrations(connection):
-    context.configure(connection=connection, target_metadata=Base.metadata, compare_type=True)
+    context.configure(
+        connection=connection, target_metadata=Base.metadata, compare_type=True
+    )
     with context.begin_transaction():
         context.run_migrations()
 
@@ -23,7 +25,9 @@ async def online():
 
 if context.is_offline_mode():
     # No URL (and no credentials) needed for reviewed PostgreSQL SQL output.
-    context.configure(dialect_name="postgresql", target_metadata=Base.metadata, literal_binds=True)
+    context.configure(
+        dialect_name="postgresql", target_metadata=Base.metadata, literal_binds=True
+    )
     with context.begin_transaction():
         context.run_migrations()
 else:

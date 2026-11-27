@@ -5,10 +5,27 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: { default: "PrepBuddy — Find your voice", template: "%s | PrepBuddy" },
-  description: "A space for students and job aspirants to prepare for interviews and group discussions. Explore the practice paths coming to PrepBuddy.",
+  description:
+    "A space for students and job aspirants to prepare for interviews and group discussions. Explore the practice paths coming to PrepBuddy.",
 };
-export const viewport: Viewport = { themeColor: "#f8f7f2", colorScheme: "light" };
+export const viewport: Viewport = {
+  themeColor: "#f8f7f2",
+  colorScheme: "light",
+};
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body><a href="#main-content" className="skip-link">Skip to content</a><Navbar />{children}<Footer /></body></html>;
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html lang="en">
+      <body>
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
+        <Navbar />
+        {children}
+        <Footer />
+      </body>
+    </html>
+  );
 }

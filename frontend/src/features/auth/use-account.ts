@@ -9,11 +9,16 @@ export function useAccount() {
   useEffect(() => {
     let active = true;
     fetch("/api/v1/auth/me", { credentials: "include", cache: "no-store" })
-      .then(async response => {
+      .then(async (response) => {
         const account = response.ok ? (await response.json()).user : null;
         if (active) setUser(account);
-      }).catch(() => { if (active) setUser(null); });
-    return () => { active = false; };
+      })
+      .catch(() => {
+        if (active) setUser(null);
+      });
+    return () => {
+      active = false;
+    };
   }, [pathname]);
   return user;
 }

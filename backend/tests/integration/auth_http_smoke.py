@@ -31,9 +31,13 @@ def main():
             assert "Secure" not in register.headers["set-cookie"]
             assert client.get("/api/v1/auth/me").json() == user
             logout = client.post("/api/v1/auth/logout")
-            assert logout.status_code == 200 and logout.json() == {"message": "Logged out"}
+            assert logout.status_code == 200 and logout.json() == {
+                "message": "Logged out"
+            }
             assert client.get("/api/v1/auth/me").status_code == 401
-            login = client.post("/api/v1/auth/login", json={"email": email, "password": password})
+            login = client.post(
+                "/api/v1/auth/login", json={"email": email, "password": password}
+            )
             assert login.status_code == 200 and login.json() == user
             assert client.get("/api/v1/auth/me").json() == user
             assert client.post("/api/v1/auth/logout").status_code == 200
@@ -50,7 +54,8 @@ def main():
                 )
                 remaining = (
                     await connection.execute(
-                        text("SELECT count(*) FROM users WHERE email=:email"), {"email": email}
+                        text("SELECT count(*) FROM users WHERE email=:email"),
+                        {"email": email},
                     )
                 ).scalar_one()
                 assert remaining == 0
